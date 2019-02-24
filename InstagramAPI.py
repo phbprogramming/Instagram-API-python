@@ -20,21 +20,10 @@ from requests_toolbelt import MultipartEncoder
 # Turn off InsecureRequestWarning
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-
-try:
-    from moviepy.editor import VideoFileClip
-except ImportError:
-    print("Fail to import moviepy. Need only for Video upload.")
-    
-
+ 
 # The urllib library was split into other modules from Python 2 to Python 3
 if sys.version_info.major == 3:
     import urllib.parse
-try:
-    from ImageUtils import getImageSize
-except:
-    # Issue 159, python3 import fix
-    from .ImageUtils import getImageSize
 
 from .exceptions import SentryBlockException
 
@@ -502,7 +491,8 @@ class InstagramAPI:
             return False
 
     def configureVideo(self, upload_id, video, thumbnail, caption=''):
-        clip = VideoFileClip(video)
+        # TODO: do something with this if I end up needing it. Removing VideoFile import
+        clip = None
         self.uploadPhoto(photo=thumbnail, caption=caption, upload_id=upload_id)
         data = json.dumps({
             'upload_id': upload_id,
@@ -530,7 +520,9 @@ class InstagramAPI:
         return self.SendRequest('media/configure/?video=1', self.generateSignature(data))
 
     def configure(self, upload_id, photo, caption=''):
-        (w, h) = getImageSize(photo)
+        # TODO: Fix the get image size reliance, I don't want to use the imports
+        # (w, h) = getImageSize(photo)
+        (w, h) = (0, 0)
         data = json.dumps({'_csrftoken': self.token,
                            'media_folder': 'Instagram',
                            'source_type': 4,
