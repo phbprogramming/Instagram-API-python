@@ -15,9 +15,9 @@ import sys
 from datetime import datetime
 import calendar
 import os
-from ratelimiter import RateLimiter
+#from ratelimiter import RateLimiter
 from requests_toolbelt import MultipartEncoder
-import requests_cache
+#import requests_cache
 
 # Turn off InsecureRequestWarning
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -941,7 +941,7 @@ class InstagramAPI:
         body += u'--{boundary}--'.format(boundary=boundary)
         return body
 
-    @RateLimiter(max_calls=1, period=1)
+    #@RateLimiter(max_calls=1, period=1)
     def SendRequest(self, endpoint, post=None, login=False):
         verify = False  # don't show request warning
 
